@@ -22,11 +22,11 @@ public class ScreenChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            anim.SetBool("ChangeToWhite", true);
-            Invoke("ChangeImg", time);
-        }
+        // if (Input.GetKeyDown(KeyCode.H))
+        // {
+        //     anim.SetBool("ChangeToWhite", true);
+        //     Invoke("ChangeImg", time);
+        // }
     }
 
     void ChangeImg()

@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     
     private bool isLadder;
     private bool isClimbing;
+    private bool isAttack;
+    private bool isDeath;
     private bool isJumping;
     private bool isFalling;
     private bool isDoubleJumping;
@@ -87,6 +89,10 @@ public class PlayerController : MonoBehaviour
         myRigidbody.velocity = playerVel;
         bool playerHasXAxisSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         myAnim.SetBool("Run", playerHasXAxisSpeed);
+        // if (playerHasXAxisSpeed)
+        // {
+        //     myAnim.SetFloat("Blend", GameController.Anim.Run);
+        // }
     }
 
     void Jump()
@@ -95,8 +101,8 @@ public class PlayerController : MonoBehaviour
         {
             if (isGround)
             {
-                //myAnim.SetFloat("ValX", h, xDampTime, Time.deltaTime);
                 myAnim.SetBool("Jump", true);
+                //myAnim.SetFloat("Blend", GameController.Anim.Jump);
                 Vector2 jumpVel = new Vector2(0.0f, jumpSpeed);
                 myRigidbody.velocity = Vector2.up * jumpVel;
                 canDoubleJump = true;
@@ -105,6 +111,7 @@ public class PlayerController : MonoBehaviour
             {
                 canDoubleJump = false;
                 myAnim.SetBool("DoubleJump", true);
+                //myAnim.SetFloat("Blend", GameController.Anim.DoubleJump);
                 Vector2 jumpVel = new Vector2(0.0f, jumpSpeed);
                 myRigidbody.velocity = Vector2.up * jumpVel;
             }
@@ -127,6 +134,7 @@ public class PlayerController : MonoBehaviour
                 myAnim.SetBool("Jump", false);
                 myAnim.SetBool("DoubleJump", false);
                 myAnim.SetBool("Climb", true);
+                //myAnim.SetFloat("Blend", GameController.Anim.Climb);
                 myRigidbody.gravityScale = 0.0f;
                 myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, climbSpeed * moveY);
             }
@@ -138,7 +146,10 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    myAnim.SetBool("Climb", false);
+                    if (isGround)
+                    {
+                        myAnim.SetBool("Climb", false);
+                    }
                     myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, 0.0f);
                 }
             }
@@ -166,6 +177,7 @@ public class PlayerController : MonoBehaviour
             {
                 myAnim.SetBool("Jump", false);
                 myAnim.SetBool("Fall", true);
+                //myAnim.SetFloat("Blend", GameController.Anim.Fall);
             }
         }
         else if (isGround)
@@ -180,6 +192,7 @@ public class PlayerController : MonoBehaviour
             {
                 myAnim.SetBool("DoubleJump", false);
                 myAnim.SetBool("DoubleFall", true);
+                //myAnim.SetFloat("Blend", GameController.Anim.DoubleFall);
             }
         }
         else if (isGround)
@@ -195,13 +208,14 @@ public class PlayerController : MonoBehaviour
         {
             gameObject.layer = LayerMask.NameToLayer("Player");
         }
-        
+
         //float moveY = Input.GetAxis("Vertical");
         if (isOneWayPlatform && (Input.GetKey(KeyCode.DownArrow) && Input.GetButtonDown("Jump")))
         {
             gameObject.layer = LayerMask.NameToLayer("OneWayPlatform");
             Invoke("ResetorPlayerLayer", resetTime);
-        } else if (isOneWayPlatform && (Input.GetKey(KeyCode.DownArrow) && isLadder))
+        } 
+        else if (isOneWayPlatform && (Input.GetKey(KeyCode.DownArrow) && isLadder))
         {
             gameObject.layer = LayerMask.NameToLayer("OneWayPlatform");
             Invoke("ResetorPlayerLayer", resetTime);

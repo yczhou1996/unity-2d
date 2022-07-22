@@ -30,6 +30,7 @@ public class PlayerAttack : MonoBehaviour
         {
             //polygonCollider2D.enabled = true;
             anim.SetTrigger("Attack");
+            //anim.SetFloat("Blend", GameController.Anim.Attack);
             StartCoroutine(startAttack());
         }
     }
